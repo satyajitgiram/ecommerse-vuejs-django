@@ -5,15 +5,14 @@
             <h1 class="title">Cart</h1>
         </div>
         <div class="column is-12 box">
-            <div v-if="cartTotalLength"> TRuwwreiworeuio</div>
-            <table class="table is-fullwidth" >
+            <table class="table is-fullwidth" v-if="cartTotalLength">
                 <thead>
                     <tr>
                         <th>Product</th>
                         <th>Price</th>
                         <th>Quantity</th>
                         <th>Total</th>
-                        <th>Action  </th>
+                        <th>Action</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -21,7 +20,15 @@
                         v-bind:initialItems="cart.items"/>
                     </tbody>
             </table>
-            <!-- <p v-else> You don't have any product in your cart...</p> -->
+            <p v-else> You don't have any product in your cart...</p>
+        </div>
+        <div class="column is-12 box">
+            <h2 class="subtitle">
+                Summery
+            </h2>
+            <strong>${{ cartTotalPrice.toFixed(2) }}</strong>, {{ cartTotalLength }} items
+            <hr>
+            <router-link to="/cart/checkout" class="button is-dark"> Proceed to Checkout </router-link>
         </div>
     </div>
 </div>
@@ -51,7 +58,12 @@ export default{
                 return this.cart?.items.reduce((acc, curVal) =>{
                     return acc += curVal.quantity
                 }, 0)
-        }
+        },
+        cartTotalPrice() {
+                return this.cart?.items.reduce((acc, curVal) =>{
+                    return acc += curVal.product.price * curVal.quantity
+                }, 0)
+        },
     }
 
 }
